@@ -8,30 +8,30 @@
 <meta name="apple-mobile-web-app-title" content="Chấm công">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-money-v2.png">
 <link rel="icon" type="image/png" sizes="180x180" href="icon-money-v2.png">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest-money-v2.json">
 <title>Chấm công & Income</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-nav{background:#111827;padding:10px;display:flex;gap:7px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
-nav button{border:0;background:#374151;color:#fff;padding:10px 14px;border-radius:8px}
-nav button.active{background:#2563eb}
-main{max-width:1180px;margin:auto;padding:16px}.page{display:none}.page.active{display:block}
-.panel,.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.num{font-size:23px;font-weight:700;margin-top:6px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
-label{font-size:13px;color:#667085;display:block;margin-bottom:5px}
-input,select,textarea{width:100%;padding:9px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;font:inherit}
-.btn{border:0;border-radius:8px;padding:9px 13px}.primary{background:#2563eb;color:#fff}.secondary{background:#e5e7eb}.danger{background:#fee2e2;color:#b42318}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.muted{font-size:13px;color:#667085}
-.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:12px}.week{text-align:center;color:#667085;font-size:12px;padding:5px}
-.day{height:78px;border:2px solid #d0d5dd;background:#fff;border-radius:9px;padding:6px;text-align:left;overflow:hidden}.day.worked{border-color:#16a34a;background:#ecfdf3}.day.note{border-color:#2563eb;background:#eff6ff}
-.mini{font-size:10px;color:#475467;display:block;margin-top:4px}.tags{display:flex;gap:3px;margin-top:4px;overflow:hidden}.tag{font-size:9px;padding:2px 5px;border:1px solid #cbd5e1;border-radius:5px;background:#fff;white-space:nowrap}
-table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #eaecf0;text-align:left;font-size:13px}th{background:#f8fafc}
-.row{display:grid;grid-template-columns:1fr 120px 40px;gap:6px;margin:7px 0}.month-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}
-.month-btn{border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:10px}.month-btn.selected{background:#2563eb;color:#fff;border-color:#2563eb}.month-btn.range{background:#dbeafe;color:#175cd3}
-#fatal{display:none;margin:12px;padding:14px;background:#fee2e2;color:#991b1b;border-radius:10px;font-size:13px;white-space:pre-wrap}
-@media(max-width:600px){main{padding:10px}.day{height:70px}.month-grid{grid-template-columns:repeat(3,1fr)}.row{grid-template-columns:1fr 95px 38px}}
-</style>
+<style>*{box-sizing:border-box}
+:root{--b:#2563eb;--g:#16a34a;--bg:#f3f5f8;--t:#172033;--m:#667085;--l:#e4e7ec}
+html,body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{padding-bottom:72px}nav{position:sticky;top:0;z-index:20;background:#111827;padding:7px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+nav button{border:0;background:transparent;color:#cbd5e1;padding:9px 2px;border-radius:9px;font-size:12px}nav button.active{background:var(--b);color:#fff}
+main{width:100%;max-width:620px;margin:auto;padding:10px}.page{display:none}.page.active{display:block}
+h1{font-size:23px;margin:7px 2px 12px}h3{font-size:16px;margin:0 0 9px}h4{font-size:14px;margin:13px 0 7px}
+.panel,.card{background:#fff;border:1px solid var(--l);border-radius:14px;padding:12px;margin-bottom:9px;box-shadow:0 1px 4px rgba(16,24,40,.04)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cards .card{margin:0;padding:10px}.num{font-size:20px;font-weight:750;margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}label{font-size:11px;color:var(--m);display:block;margin-bottom:4px}
+input,select,textarea{width:100%;min-height:40px;padding:8px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;font:inherit;font-size:14px}
+.btn{border:0;border-radius:8px;padding:9px 12px;font:inherit;font-size:13px}.primary{background:var(--b);color:#fff}.secondary{background:#eef0f3;color:#344054}.danger{background:#fee4e2;color:#b42318}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.muted{font-size:11px;color:var(--m)}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}.week{text-align:center;color:var(--m);font-size:10px;padding:3px}
+.day{height:61px;border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:5px;text-align:left;overflow:hidden;color:var(--t)}.day.worked{border:2px solid var(--g);background:#ecfdf3}.day.note{border-color:var(--b);background:#eff6ff}
+.day b{font-size:12px}.mini{font-size:8px;color:#667085;display:block;margin-top:2px}.tags{display:flex;gap:2px;margin-top:3px;overflow:hidden}.tag{font-size:7px;padding:2px 3px;border:1px solid #cbd5e1;border-radius:4px;background:#fff;white-space:nowrap}
+table{width:100%;border-collapse:collapse}th,td{padding:7px 5px;border-bottom:1px solid #eaecf0;text-align:left;font-size:11px}th{background:#f8fafc}
+.row{display:grid;grid-template-columns:1fr 92px 36px;gap:5px;margin:6px 0}.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.month-btn{border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:9px;font-size:12px}.month-btn.selected{background:var(--b);color:#fff;border-color:var(--b)}.month-btn.range{background:#dbeafe;color:#175cd3}
+#incomeSelection{font-size:13px;font-weight:600}
+#fatal{display:none;margin:10px;padding:12px;background:#fee2e2;color:#991b1b;border-radius:10px;font-size:12px;white-space:pre-wrap}
+@media(min-width:621px){body{padding-bottom:0}main{padding:18px}.day{height:76px}}</style>
 </head>
 <body>
 <div id="fatal"></div>
@@ -43,7 +43,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px so
 </nav>
 <main>
 <section id="home" class="page active">
-<h1>Tổng quan</h1><div class="cards">
+<h1>📊 Tổng quan</h1><div class="cards">
 <div class="card">Tổng Income<div class="num" id="homeTotal">0đ</div></div>
 <div class="card">Ngày đi làm<div class="num" id="homeDays">0</div></div>
 <div class="card">Tổng OT<div class="num" id="homeOT">0đ</div></div>
@@ -59,7 +59,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px so
 <div><label>Số công chuẩn</label><input type="number" id="workDays" min="1"></div>
 <div><label>Giờ làm / ngày</label><input type="number" id="hoursPerDay" min="1"></div>
 </div>
-<div class="muted" style="margin-top:9px">Bấm vào ngày là chấm công ngay. Bấm lại ngày đã chấm để bỏ chấm công.</div>
+<div class="muted" style="margin-top:9px"></div>
 <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:10px"><span>Lương ngày: <b id="autoDay">0k</b></span><span>Lương giờ: <b id="autoHour">0k/h</b></span><span>OT 1.5: <b id="auto15">0k/h</b></span><span>OT 2: <b id="auto2">0k/h</b></span></div>
 </div>
 <div class="panel"><div style="display:flex;justify-content:space-between;align-items:center"><button class="btn secondary" id="workPrev">←</button><b id="workMonthTitle"></b><button class="btn secondary" id="workNext">→</button></div><div class="calendar" id="calendar"></div><div style="margin-top:8px"><b id="workSummary"></b></div></div>
@@ -74,17 +74,17 @@ table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px so
 
 <section id="income" class="page">
 <h1>💰 Income</h1>
-<div class="panel"><h3>Chọn tháng</h3><div class="muted">Chọn 1 tháng để xem riêng. Chọn 2 tháng bất kỳ để xem toàn bộ khoảng từ tháng đầu đến tháng cuối.</div>
+<div class="panel"><h3>Chọn tháng</h3><div class="muted"></div>
 <div class="grid" style="margin-top:10px"><div><label>Năm</label><select id="incomeYear"></select></div><div><label>Đang chọn</label><div id="incomeSelection" style="padding:9px;background:#f8fafc;border-radius:8px">Chưa chọn</div></div></div>
 <div class="month-grid" id="incomeMonths"></div><div class="actions"><button class="btn primary" id="incomeOK">OK</button><button class="btn secondary" id="incomeClear">Bỏ chọn</button></div><div class="muted" id="incomeLabel" style="margin-top:8px"></div></div>
 <div class="cards">
 <div class="card">💰 Tổng Income<div class="num" id="totalIncome">0đ</div></div><div class="card">Tiền công<div class="num" id="incomeWork">0đ</div></div><div class="card">OT<div class="num" id="incomeOT">0đ</div></div><div class="card">Công tác phí<div class="num" id="incomeCTP">0đ</div></div><div class="card">Đi lại<div class="num" id="incomeTravel">0đ</div></div><div class="card">Income thêm<div class="num" id="incomeExtra">0đ</div></div></div>
-<div class="panel"><h3>＋ Income tự do</h3><div class="muted">Đơn vị mặc định: nghìn đồng.</div><div id="customIncome"></div><button class="btn secondary" id="addCustom">＋ Thêm khoản Income</button></div>
+<div class="panel"><h3>＋ Income tự do</h3><div class="muted"></div><div id="customIncome"></div><button class="btn secondary" id="addCustom">＋ Thêm khoản Income</button></div>
 <div class="panel"><h3>Chi tiết</h3><div style="overflow:auto"><table><thead><tr><th>Ngày</th><th>Công</th><th>OT</th><th>CTP</th><th>Đi lại</th><th>Income thêm</th><th>Tổng ngày</th></tr></thead><tbody id="incomeTable"></tbody></table></div></div>
 </section>
 
 <section id="funds" class="page">
-<h1>🏦 Phân bổ quỹ</h1><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><h3 style="margin:0">Các quỹ</h3><div class="muted">Thêm, xóa, đổi tên và chỉnh tỷ lệ tùy thích.</div></div><button class="btn secondary" id="addFund">＋ Thêm quỹ</button></div>
+<h1>🏦 Quỹ</h1><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><h3 style="margin:0">Các quỹ</h3><div class="muted"></div></div><button class="btn secondary" id="addFund">＋ Thêm quỹ</button></div>
 <div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Tên quỹ</th><th>Tỷ lệ</th><th>Số tiền</th><th></th></tr></thead><tbody id="fundEditor"></tbody></table></div>
 <div style="display:flex;justify-content:space-between;padding:12px;background:#f8fafc;margin-top:10px;border-radius:8px"><span>Tổng tỷ lệ</span><b id="fundPercent">0%</b></div><div class="actions"><button class="btn primary" id="allocate">Phân bổ Tổng Income</button></div></div>
 <div class="panel"><h3>Số dư quỹ</h3><div id="fundBalances"></div></div>
