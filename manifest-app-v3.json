@@ -1,0 +1,17 @@
+{
+  "name": "Chấm công V3",
+  "short_name": "Chấm công",
+  "start_url": "./cham-cong-v3.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "./icon-money-v2.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
