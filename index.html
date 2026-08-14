@@ -10,28 +10,43 @@
 <link rel="icon" type="image/png" sizes="180x180" href="icon-money-v2.png">
 <link rel="manifest" href="manifest-money-v2.json">
 <title>Chấm công & Income</title>
-<style>*{box-sizing:border-box}
-:root{--b:#2563eb;--g:#16a34a;--bg:#f3f5f8;--t:#172033;--m:#667085;--l:#e4e7ec}
-html,body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-body{padding-bottom:72px}nav{position:sticky;top:0;z-index:20;background:#111827;padding:7px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-nav button{border:0;background:transparent;color:#cbd5e1;padding:9px 2px;border-radius:9px;font-size:12px}nav button.active{background:var(--b);color:#fff}
-main{width:100%;max-width:620px;margin:auto;padding:10px}.page{display:none}.page.active{display:block}
-h1{font-size:23px;margin:7px 2px 12px}h3{font-size:16px;margin:0 0 9px}h4{font-size:14px;margin:13px 0 7px}
-.panel,.card{background:#fff;border:1px solid var(--l);border-radius:14px;padding:12px;margin-bottom:9px;box-shadow:0 1px 4px rgba(16,24,40,.04)}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cards .card{margin:0;padding:10px}.num{font-size:20px;font-weight:750;margin-top:4px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}label{font-size:11px;color:var(--m);display:block;margin-bottom:4px}
-input,select,textarea{width:100%;min-height:40px;padding:8px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;font:inherit;font-size:14px}
-.btn{border:0;border-radius:8px;padding:9px 12px;font:inherit;font-size:13px}.primary{background:var(--b);color:#fff}.secondary{background:#eef0f3;color:#344054}.danger{background:#fee4e2;color:#b42318}
-.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.muted{font-size:11px;color:var(--m)}
-.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}.week{text-align:center;color:var(--m);font-size:10px;padding:3px}
-.day{height:61px;border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:5px;text-align:left;overflow:hidden;color:var(--t)}.day.worked{border:2px solid var(--g);background:#ecfdf3}.day.note{border-color:var(--b);background:#eff6ff}
-.day b{font-size:12px}.mini{font-size:8px;color:#667085;display:block;margin-top:2px}.tags{display:flex;gap:2px;margin-top:3px;overflow:hidden}.tag{font-size:7px;padding:2px 3px;border:1px solid #cbd5e1;border-radius:4px;background:#fff;white-space:nowrap}
-table{width:100%;border-collapse:collapse}th,td{padding:7px 5px;border-bottom:1px solid #eaecf0;text-align:left;font-size:11px}th{background:#f8fafc}
-.row{display:grid;grid-template-columns:1fr 92px 36px;gap:5px;margin:6px 0}.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
-.month-btn{border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:9px;font-size:12px}.month-btn.selected{background:var(--b);color:#fff;border-color:var(--b)}.month-btn.range{background:#dbeafe;color:#175cd3}
-#incomeSelection{font-size:13px;font-weight:600}
+<style>
+*{box-sizing:border-box}
+:root{--blue:#2563eb;--blue2:#eff6ff;--green:#16a34a;--red:#dc2626;--bg:#f5f7fa;--card:#fff;--text:#111827;--muted:#667085;--line:#e5e7eb}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+body{padding-bottom:82px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:50;height:70px;padding:7px 10px calc(7px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid #e5e7eb;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+nav button{border:0;background:transparent;color:#667085;border-radius:12px;font-size:11px;font-weight:600;padding:6px 2px}
+nav button:active{transform:scale(.97)}nav button.active{background:#eff6ff;color:var(--blue)}
+main{width:100%;max-width:520px;margin:0 auto;padding:12px 12px 20px}
+.page{display:none}.page.active{display:block}
+h1{font-size:25px;line-height:1.15;margin:5px 2px 14px;letter-spacing:-.5px}
+h3{font-size:16px;margin:0 0 10px}h4{font-size:14px;margin:14px 0 7px}
+.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:13px;margin-bottom:10px;box-shadow:0 2px 8px rgba(16,24,40,.035)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px}.cards .card{margin:0;min-height:86px;padding:12px}
+.num{font-size:20px;font-weight:800;margin-top:5px;letter-spacing:-.3px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px}
+input,select,textarea{width:100%;min-height:41px;padding:8px 9px;border:1px solid #d0d5dd;border-radius:10px;background:#fff;color:var(--text);font:inherit;font-size:14px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#84adff;box-shadow:0 0 0 3px #eff6ff}
+.btn{border:0;border-radius:10px;padding:9px 12px;font:inherit;font-size:13px;font-weight:600}
+.primary{background:var(--blue);color:#fff}.secondary{background:#eef1f5;color:#344054}.danger{background:#fee4e2;color:#b42318}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.muted{font-size:11px;color:var(--muted)}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:9px}
+.week{text-align:center;color:#98a2b3;font-size:10px;font-weight:600;padding:3px}
+.day{height:62px;border:1px solid #d9dde4;background:#fff;border-radius:9px;padding:5px;text-align:left;overflow:hidden;color:var(--text);font:inherit}
+.day:active{transform:scale(.97)}.day.worked{border:2px solid var(--green);background:#ecfdf3}.day.note{border-color:var(--blue);background:var(--blue2)}
+.day b{font-size:12px}.mini{font-size:8px;color:#667085;display:block;margin-top:2px}.tags{display:flex;gap:2px;margin-top:3px;overflow:hidden}.tag{font-size:7px;padding:2px 3px;border:1px solid #d0d5dd;border-radius:4px;background:#fff;white-space:nowrap}
+.monthbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}.monthbar .btn{min-width:42px;font-size:18px;padding:7px}
+table{width:100%;border-collapse:collapse}th,td{padding:8px 5px;border-bottom:1px solid #edf0f2;text-align:left;font-size:11px;white-space:nowrap}th{background:#f8fafc}
+.row{display:grid;grid-template-columns:1fr 92px 36px;gap:5px;margin:6px 0}
+.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.month-btn{border:1px solid #d0d5dd;background:#fff;border-radius:9px;padding:9px;font-size:12px;font-weight:600}.month-btn.selected{background:var(--blue);color:#fff;border-color:var(--blue)}.month-btn.range{background:#dbeafe;color:#175cd1}
+#incomeSelection{font-size:13px;font-weight:700;padding:9px!important}
 #fatal{display:none;margin:10px;padding:12px;background:#fee2e2;color:#991b1b;border-radius:10px;font-size:12px;white-space:pre-wrap}
-@media(min-width:621px){body{padding-bottom:0}main{padding:18px}.day{height:76px}}</style>
+.statline{display:flex;gap:7px;overflow:auto;margin:10px 0}.stat{background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:8px 10px;min-width:max-content;font-size:11px}.stat b{font-size:12px}
+@media(min-width:700px){body{padding-bottom:0}nav{position:sticky;top:0;bottom:auto;height:auto;border-top:0;border-bottom:1px solid #e5e7eb;background:#111827}nav button{color:#cbd5e1}nav button.active{background:var(--blue);color:#fff}main{max-width:700px;padding:18px}.day{height:76px}}
+</style>
 </head>
 <body>
 <div id="fatal"></div>
@@ -62,7 +77,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:7px 5px;border-bottom:1p
 <div class="muted" style="margin-top:9px"></div>
 <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:10px"><span>Lương ngày: <b id="autoDay">0k</b></span><span>Lương giờ: <b id="autoHour">0k/h</b></span><span>OT 1.5: <b id="auto15">0k/h</b></span><span>OT 2: <b id="auto2">0k/h</b></span></div>
 </div>
-<div class="panel"><div style="display:flex;justify-content:space-between;align-items:center"><button class="btn secondary" id="workPrev">←</button><b id="workMonthTitle"></b><button class="btn secondary" id="workNext">→</button></div><div class="calendar" id="calendar"></div><div style="margin-top:8px"><b id="workSummary"></b></div></div>
+<div class="panel"><div class="monthbar"><button class="btn secondary" id="workPrev">‹</button><b id="workMonthTitle"></b><button class="btn secondary" id="workNext">›</button></div><div class="calendar" id="calendar"></div><div style="margin-top:8px"><b id="workSummary"></b></div></div>
 <div class="panel"><h3 id="selectedTitle">Chọn ngày</h3><div id="dayEditor" style="display:none">
 <div class="grid"><div><label>OT 1.5 (giờ)</label><input id="ot15" type="number" min="0" step=".5"></div><div><label>OT 2 (giờ)</label><input id="ot2" type="number" min="0" step=".5"></div><div><label>Công tác phí (nghìn đồng)</label><input id="ctp" type="number" min="0"></div><div><label>Đi lại (nghìn đồng)</label><input id="travel" type="number" min="0"></div></div>
 <h4>Income tự thêm trong ngày</h4><div id="dayIncome"></div><button class="btn secondary" id="addDayIncome">＋ Thêm Income</button>
