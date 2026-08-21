@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Chấm công">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-money-v2.png">
+<link rel="icon" type="image/png" sizes="180x180" href="icon-money-v2.png">
+<link rel="manifest" href="manifest-app-moi.json">
+<title>Chấm công & Income</title>
+<style>html,body{touch-action:manipulation;-webkit-text-size-adjust:100%;}
+*{box-sizing:border-box}
+:root{--blue:#2563eb;--blue2:#eff6ff;--green:#16a34a;--red:#dc2626;--bg:#f5f7fa;--card:#fff;--text:#111827;--muted:#667085;--line:#e5e7eb}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+body{padding-bottom:82px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:50;height:70px;padding:7px 10px calc(7px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid #e5e7eb;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+nav button{border:0;background:transparent;color:#667085;border-radius:12px;font-size:11px;font-weight:600;padding:6px 2px}
+nav button:active{transform:scale(.97)}nav button.active{background:#eff6ff;color:var(--blue)}
+main{width:100%;max-width:520px;margin:0 auto;padding:12px 12px 20px}
+.page{display:none}.page.active{display:block}
+h1{font-size:25px;line-height:1.15;margin:5px 2px 14px;letter-spacing:-.5px}
+h3{font-size:16px;margin:0 0 10px}h4{font-size:14px;margin:14px 0 7px}
+.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:13px;margin-bottom:10px;box-shadow:0 2px 8px rgba(16,24,40,.035)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px}.cards .card{margin:0;min-height:86px;padding:12px}
+.num{font-size:20px;font-weight:800;margin-top:5px;letter-spacing:-.3px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px}
+input,select,textarea{width:100%;min-height:41px;padding:8px 9px;border:1px solid #d0d5dd;border-radius:10px;background:#fff;color:var(--text);font:inherit;font-size:14px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#84adff;box-shadow:0 0 0 3px #eff6ff}
+.btn{border:0;border-radius:10px;padding:9px 12px;font:inherit;font-size:13px;font-weight:600}
+.primary{background:var(--blue);color:#fff}.secondary{background:#eef1f5;color:#344054}.danger{background:#fee4e2;color:#b42318}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.muted{font-size:11px;color:var(--muted)}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:9px}
+.week{text-align:center;color:#98a2b3;font-size:10px;font-weight:600;padding:3px}
+.day{height:62px;border:1px solid #d9dde4;background:#fff;border-radius:9px;padding:5px;text-align:left;overflow:hidden;color:var(--text);font:inherit}
+.day:active{transform:scale(.97)}.day.worked{border:2px solid var(--green);background:#ecfdf3}.day.note{border-color:var(--blue);background:var(--blue2)}
+.day b{font-size:12px}.mini{font-size:8px;color:#667085;display:block;margin-top:2px}.tags{display:flex;gap:2px;margin-top:3px;overflow:hidden}.tag{font-size:7px;padding:2px 3px;border:1px solid #d0d5dd;border-radius:4px;background:#fff;white-space:nowrap}
+.monthbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}.monthbar .btn{min-width:42px;font-size:18px;padding:7px}
+table{width:100%;border-collapse:collapse}th,td{padding:8px 5px;border-bottom:1px solid #edf0f2;text-align:left;font-size:11px;white-space:nowrap}th{background:#f8fafc}
+.row{display:grid;grid-template-columns:1fr 92px 36px;gap:5px;margin:6px 0}
+.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.month-btn{border:1px solid #d0d5dd;background:#fff;border-radius:9px;padding:9px;font-size:12px;font-weight:600}.month-btn.selected{background:var(--blue);color:#fff;border-color:var(--blue)}.month-btn.range{background:#dbeafe;color:#175cd1}
+#incomeSelection{font-size:13px;font-weight:700;padding:9px!important}
+#fatal{display:none;margin:10px;padding:12px;background:#fee2e2;color:#991b1b;border-radius:10px;font-size:12px;white-space:pre-wrap}
+.statline{display:flex;gap:7px;overflow:auto;margin:10px 0}.stat{background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:8px 10px;min-width:max-content;font-size:11px}.stat b{font-size:12px}
+@media(min-width:700px){body{padding-bottom:0}nav{position:sticky;top:0;bottom:auto;height:auto;border-top:0;border-bottom:1px solid #e5e7eb;background:#111827}nav button{color:#cbd5e1}nav button.active{background:var(--blue);color:#fff}main{max-width:700px;padding:18px}.day{height:76px}}
+</style>
+</head>
+<body>
+<div id="fatal"></div>
+<nav>
+<button class="active" data-page="home">🏠 Tổng quan</button>
+<button data-page="work">🕐 Chấm công</button>
+<button data-page="income">💰 Income</button>
+<button data-page="funds">🏦 Quỹ</button>
+</nav>
+<main>
+<section id="home" class="page active">
+<h1>📊 Tổng quan</h1><div class="cards">
+<div class="card">Tổng Income<div class="num" id="homeTotal">0đ</div></div>
+<div class="card">Ngày đi làm<div class="num" id="homeDays">0</div></div>
+<div class="card">Tổng OT<div class="num" id="homeOT">0đ</div></div>
+<div class="card">Đi lại<div class="num" id="homeTravel">0đ</div></div></div>
+<div class="panel"><h3>🏦 Các quỹ</h3><select id="fundMode" style="margin-bottom:8px"><option value="percent">Theo %</option><option value="amount">Theo số tiền</option></select><div id="homeFunds"></div></div>
+</section>
+
+<section id="work" class="page">
+<h1>🕐 Chấm công</h1>
+<div class="panel"><div class="grid">
+<div><label>Tháng</label><input type="month" id="workMonth"></div>
+<div><label>Thu nhập cứng / tháng (nghìn đồng)</label><input type="number" id="monthlyIncome"></div>
+<div><label>Số công chuẩn</label><input type="number" id="workDays" min="1"></div>
+<div><label>Giờ làm / ngày</label><input type="number" id="hoursPerDay" min="1"></div>
+</div>
+<div class="muted" style="margin-top:9px"></div>
+<div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:10px"><span>Lương ngày: <b id="autoDay">0k</b></span><span>Lương giờ: <b id="autoHour">0k/h</b></span><span>OT 1.5: <b id="auto15">0k/h</b></span><span>OT 2: <b id="auto2">0k/h</b></span></div>
+</div>
+<div class="panel"><div class="monthbar"><button class="btn secondary" id="workPrev">‹</button><b id="workMonthTitle"></b><button class="btn secondary" id="workNext">›</button></div><div class="calendar" id="calendar"></div><div style="margin-top:8px"><b id="workSummary"></b></div></div>
+<div class="panel"><h3 id="selectedTitle">Chọn ngày</h3><div id="dayEditor" style="display:none">
+<div class="grid"><div><label>OT 1.5 (giờ)</label><input id="ot15" type="number" min="0" step=".5"></div><div><label>OT 2 (giờ)</label><input id="ot2" type="number" min="0" step=".5"></div><div><label>Công tác phí (đ)</label><input id="ctp" type="number" min="0" step="1000" placeholder="100000"></div><div><label>Đi lại (Km)</label><input id="travel" type="number" min="0" step="1" placeholder="Số Km"></div></div>
+<h4>Income tự thêm trong ngày</h4><div id="dayIncome"></div><button class="btn secondary" id="addDayIncome">＋ Thêm Income</button>
+<div style="margin-top:10px"><label>Ghi chú</label><textarea id="dayNote" rows="2"></textarea></div>
+<div class="actions"><button class="btn primary" id="saveDay">Lưu ngày</button><button class="btn danger" id="unwork">Bỏ chấm công</button></div>
+</div></div>
+<div class="panel"><h3>Chi tiết tháng</h3><div style="overflow:auto"><table><thead><tr><th>Ngày</th><th>Công</th><th>OT</th><th>CTP</th><th>Đi lại</th><th>Income thêm</th><th>Tổng</th></tr></thead><tbody id="workTable"></tbody></table></div></div>
+</section>
+
+<section id="income" class="page">
+<h1>💰 Income</h1>
+<div class="panel"><h3>Chọn tháng</h3><div class="muted"></div>
+<div class="grid" style="margin-top:10px"><div><label>Năm</label><select id="incomeYear"></select></div><div><label>Đang chọn</label><div id="incomeSelection" style="padding:9px;background:#f8fafc;border-radius:8px">Chưa chọn</div></div></div>
+<div class="month-grid" id="incomeMonths"></div><div class="actions"><button class="btn primary" id="incomeOK">OK</button><button class="btn secondary" id="incomeClear">Bỏ chọn</button></div><div class="muted" id="incomeLabel" style="margin-top:8px"></div></div>
+<div class="cards">
+<div class="card">💰 Tổng Income<div class="num" id="totalIncome">0đ</div></div><div class="card">Tiền công<div class="num" id="incomeWork">0đ</div></div><div class="card">OT<div class="num" id="incomeOT">0đ</div></div><div class="card">Công tác phí<div class="num" id="incomeCTP">0đ</div></div><div class="card">Đi lại<div class="num" id="incomeTravel">0đ</div></div><div class="card">Income thêm<div class="num" id="incomeExtra">0đ</div></div></div>
+<div class="panel"><h3>＋ Income tự do</h3><div class="muted"></div><div id="customIncome"></div><button class="btn secondary" id="addCustom">＋ Thêm khoản Income</button></div>
+<div class="panel"><h3>Chi tiết</h3><div style="overflow:auto"><table><thead><tr><th>Ngày</th><th>Công</th><th>OT</th><th>CTP</th><th>Đi lại</th><th>Income thêm</th><th>Tổng ngày</th></tr></thead><tbody id="incomeTable"></tbody></table></div></div>
+</section>
+
+<section id="funds" class="page">
+<h1>🏦 Quỹ</h1><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><h3 style="margin:0">Các quỹ</h3><div class="muted"></div></div><button class="btn secondary" id="addFund">＋ Thêm quỹ</button></div>
+<div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Tên quỹ</th><th>Tỷ lệ</th><th>Số tiền</th><th></th></tr></thead><tbody id="fundEditor"></tbody></table></div>
+<div style="display:flex;justify-content:space-between;padding:12px;background:#f8fafc;margin-top:10px;border-radius:8px"><span>Tổng tỷ lệ</span><b id="fundPercent">0%</b></div><div class="actions"><button class="btn primary" id="allocate">Phân bổ Tổng Income</button></div></div>
+<div class="panel"><h3>Số dư quỹ</h3><div id="fundBalances"></div></div>
+</section>
+</main>
+
+<script>
+(function(){
+"use strict";
+var KEY="income_v2_clean";
+var fatal=document.getElementById("fatal");
+window.onerror=function(msg,src,line,col){fatal.style.display="block";fatal.innerHTML="Ứng dụng gặp lỗi khi chạy trên trình duyệt này.\\n"+msg+"\\nDòng: "+line;};
+var data=null;
+try{data=JSON.parse(localStorage.getItem(KEY)||"null");}catch(e){data=null;}
+if(!data||typeof data!=="object")data={};
+if(!data.settings||typeof data.settings!=="object")data.settings={};
+if(data.settings.income==null)data.settings.income=0;
+if(data.settings.days==null)data.settings.days=25;
+if(data.settings.hours==null)data.settings.hours=8;
+if(!data.days||typeof data.days!=="object"||Array.isArray(data.days))data.days={};
+if(!Array.isArray(data.custom))data.custom=[];
+if(!Array.isArray(data.funds)){
+ var old=data.funds&&typeof data.funds==="object"?data.funds:{};
+ data.funds=[
+  {name:"Sinh hoạt",percent:40,balance:Number(old.living)||0},
+  {name:"Tiết kiệm",percent:20,balance:Number(old.saving)||0},
+  {name:"Đầu tư",percent:15,balance:Number(old.invest)||0},
+  {name:"Học tập",percent:10,balance:Number(old.study)||0},
+  {name:"Giải trí",percent:10,balance:Number(old.fun)||0},
+  {name:"Khẩn cấp",percent:5,balance:Number(old.emergency)||0}
+ ];
+}
+var i;
+for(i=0;i<data.funds.length;i++){
+ data.funds[i]={name:String(data.funds[i].name||("Quỹ "+(i+1))),percent:Number(data.funds[i].percent)||0,balance:Number(data.funds[i].balance)||0};
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+save();
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function money(n){return Math.round(Number(n)||0).toLocaleString("vi-VN")+"đ";}
+function kmoney(n){return Math.round(Number(n)||0).toLocaleString("vi-VN")+"k";}
+function baseDay(){return data.settings.days?Number(data.settings.income)*1000/Number(data.settings.days):0;}
+function hourRate(){return data.settings.days&&data.settings.hours?Number(data.settings.income)/Number(data.settings.days)/Number(data.settings.hours):0;}
+function getDay(date){if(!data.days[date])data.days[date]={worked:false,ot15:0,ot2:0,ctp:0,travel:0,incomes:[],note:""};if(!Array.isArray(data.days[date].incomes))data.days[date].incomes=[];return data.days[date];}
+function dayExtra(d){var s=0,a=d.incomes||[];for(var j=0;j<a.length;j++)s+=Number(a[j].amount||0)*1000;return s;}
+function dayOT(d){var r=hourRate();return Number(d.ot15||0)*r*1000*1.5+Number(d.ot2||0)*r*1000*2;}
+function dayTotal(d){return baseDay()+dayOT(d)+Number(d.ctp||0)*1000+Number(d.travel||0)*2000+dayExtra(d);}
+function entries(){var a=[];for(var k in data.days)if(data.days.hasOwnProperty(k)&&data.days[k]&&data.days[k].worked){var d=data.days[k];d.date=k;a.push(d);}return a;}
+function totalWork(){return entries().length*baseDay();}
+function totalOT(){var a=entries(),s=0;for(var j=0;j<a.length;j++)s+=dayOT(a[j]);return s;}
+function totalCTP(){var a=entries(),s=0;for(var j=0;j<a.length;j++)s+=Number(a[j].ctp||0)*1000;return s;}
+function totalTravel(){var a=entries(),s=0;for(var j=0;j<a.length;j++)s+=Number(a[j].travel||0)*1000;return s;}
+function totalExtra(){var a=entries(),s=0;for(var j=0;j<a.length;j++)s+=dayExtra(a[j]);return s;}
+function customTotal(){var s=0;for(var j=0;j<data.custom.length;j++)s+=Number(data.custom[j].amount||0)*1000;return s;}
+function totalIncome(){return totalWork()+totalOT()+totalCTP()+totalTravel()+totalExtra()+customTotal();}
+
+var nav=document.querySelectorAll("nav button");
+for(i=0;i<nav.length;i++)(function(b){b.onclick=function(){for(var q=0;q<nav.length;q++)nav[q].className="";var pages=document.querySelectorAll(".page");for(var q2=0;q2<pages.length;q2++)pages[q2].className="page";b.className="active";$(b.getAttribute("data-page")).className="page active";render();};})(nav[i]);
+
+var selectedDay=null;
+var now=new Date();
+$("workMonth").value=now.getFullYear()+"-"+("0"+(now.getMonth()+1)).slice(-2);
+$("workMonth").onchange=renderWork;
+$("workPrev").onclick=function(){changeWorkMonth(-1);};
+$("workNext").onclick=function(){changeWorkMonth(1);};
+$("monthlyIncome").oninput=function(){data.settings.income=Number(this.value)||0;save();render();};
+$("workDays").oninput=function(){data.settings.days=Math.max(1,Number(this.value)||25);save();render();};
+$("hoursPerDay").oninput=function(){data.settings.hours=Math.max(1,Number(this.value)||8);save();render();};
+
+function changeWorkMonth(n){
+ var p=$("workMonth").value.split("-"),y=Number(p[0]),m=Number(p[1]);
+ var d=new Date(y,m-1+n,1);$("workMonth").value=d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2);renderWork();
+}
+function renderWork(){
+ $("monthlyIncome").value=data.settings.income;$("workDays").value=data.settings.days;$("hoursPerDay").value=data.settings.hours;
+ var p=$("workMonth").value.split("-"),y=Number(p[0]),mo=Number(p[1]),first=new Date(y,mo-1,1),count=new Date(y,mo,0).getDate(),start=(first.getDay()+6)%7;
+ $("workMonthTitle").textContent=first.toLocaleDateString("vi-VN",{month:"long",year:"numeric"});
+ $("autoDay").textContent=kmoney(baseDay()/1000);$("autoHour").textContent=kmoney(hourRate())+"/h";$("auto15").textContent=kmoney(hourRate()*1.5)+"/h";$("auto2").textContent=kmoney(hourRate()*2)+"/h";
+ var c=$("calendar"),out=["T2","T3","T4","T5","T6","T7","CN"].map(function(x){return '<div class="week">'+x+"</div>";}).join("");
+ for(var z=0;z<start;z++)out+="<div></div>";
+ for(var n=1;n<=count;n++){
+  var date=y+"-"+("0"+mo).slice(-2)+"-"+("0"+n).slice(-2),d=data.days[date],worked=d&&d.worked,has=worked&&(d.ot15||d.ot2||d.ctp||d.travel||d.note||(d.incomes&&d.incomes.length)),tags=[];
+  if(d&&d.ot15)tags.push("OT1.5");if(d&&d.ot2)tags.push("OT2");if(d&&d.ctp)tags.push("CTP");if(d&&d.travel)tags.push("🚗");if(d&&d.incomes&&d.incomes.length)tags.push("IN");
+  out+='<button type="button" class="day '+(worked?"worked ":"")+(has?"note":"")+'" onclick="window.selectDay(\''+date+'\')"><b>'+n+'</b><span class="mini">'+(worked?"✓":"")+"</span>"+(tags.length?'<div class="tags">'+tags.map(function(t){return '<span class="tag">'+t+"</span>";}).join("")+"</div>":"")+"</button>";
+ }
+ c.innerHTML=out;
+ var es=entries().filter(function(d){return d.date.indexOf($("workMonth").value)===0;});
+ $("workSummary").textContent=es.length+"/"+data.settings.days+" công · "+money(es.length*baseDay());
+ var rows="";for(i=0;i<es.length;i++){var d=es[i];rows+="<tr><td>"+d.date+"</td><td>"+money(baseDay())+"</td><td>"+money(dayOT(d))+"</td><td>"+kmoney(d.ctp)+"</td><td>"+kmoney(d.travel)+"</td><td>"+money(dayExtra(d))+"</td><td><b>"+money(dayTotal(d))+"</b></td></tr>";}
+ $("workTable").innerHTML=rows||'<tr><td colspan="7" class="muted">Chưa có dữ liệu</td></tr>';
+}
+window.selectDay=function(date){
+ selectedDay=date;var d=getDay(date);d.worked=!d.worked;save();
+ $("selectedTitle").textContent="Ngày "+date;$("dayEditor").style.display="block";$("ot15").value=d.ot15||0;$("ot2").value=d.ot2||0;$("ctp").value=d.ctp?Number(d.ctp)*1000:"";$("travel").value=d.travel||0;$("dayNote").value=d.note||"";renderDayIncome();renderWork();renderHome();
+};
+function renderDayIncome(){
+ var d=getDay(selectedDay),out="";
+ for(var j=0;j<d.incomes.length;j++)out+='<div class="row"><input data-di="'+j+'" data-f="name" value="'+esc(d.incomes[j].name)+'" placeholder="Tên Income"><input type="number" data-di="'+j+'" data-f="amount" value="'+(d.incomes[j].amount||0)+'" placeholder="nghìn đồng"><button type="button" class="btn danger" data-del="'+j+'">×</button></div>';
+ $("dayIncome").innerHTML=out;
+ var ins=$("dayIncome").querySelectorAll("input");for(var q=0;q<ins.length;q++)ins[q].onchange=function(){var idx=Number(this.getAttribute("data-di")),f=this.getAttribute("data-f");d.incomes[idx][f]=f==="amount"?Number(this.value)||0:this.value;save();render();};
+ var dels=$("dayIncome").querySelectorAll("[data-del]");for(var q2=0;q2<dels.length;q2++)dels[q2].onclick=function(){d.incomes.splice(Number(this.getAttribute("data-del")),1);save();render();};
+}
+$("addDayIncome").onclick=function(){getDay(selectedDay).incomes.push({name:"",amount:0});save();renderDayIncome();};
+$("saveDay").onclick=function(){var d=getDay(selectedDay);d.worked=true;d.ot15=Number($("ot15").value)||0;d.ot2=Number($("ot2").value)||0;d.ctp=(Number($("ctp").value)||0)/1000;d.travel=Number($("travel").value)||0;d.note=$("dayNote").value;save();render();};
+$("unwork").onclick=function(){if(selectedDay){getDay(selectedDay).worked=false;save();$("dayEditor").style.display="none";render();}};
+
+var incomeSelected=[],incomeYear=now.getFullYear();
+function monthLabel(ym){var p=ym.split("-");return "Tháng "+Number(p[1])+"/"+p[0];}
+function drawIncomeMonths(){
+ var box=$("incomeMonths"),out="";
+ for(var m=1;m<=12;m++){var ym=incomeYear+"-"+("0"+m).slice(-2),selected=incomeSelected.indexOf(ym)>=0,range=false;
+  if(incomeSelected.length===2){var a=incomeSelected.slice().sort(),lo=a[0],hi=a[1];range=ym>=lo&&ym<=hi;}
+  out+='<button type="button" class="month-btn '+(selected?"selected ":"")+(range&&!selected?"range":"")+'" data-ym="'+ym+'">Tháng '+m+"</button>";
+ }
+ box.innerHTML=out;var bs=box.querySelectorAll("button");for(var q=0;q<bs.length;q++)bs[q].onclick=function(){var ym=this.getAttribute("data-ym");if(!incomeSelected.length)incomeSelected=[ym];else if(incomeSelected.length===1)incomeSelected=[incomeSelected[0],ym].sort();else incomeSelected=[ym];updateIncomeSelection();drawIncomeMonths();};
+}
+function updateIncomeSelection(){$("incomeSelection").textContent=incomeSelected.length===1?monthLabel(incomeSelected[0]):incomeSelected.length===2?monthLabel(incomeSelected[0])+" → "+monthLabel(incomeSelected[1]):"Chưa chọn";}
+function setupIncome(){
+ var years={};years[now.getFullYear()]=1;for(var d in data.days)if(data.days.hasOwnProperty(d))years[Number(d.slice(0,4))]=1;
+ var vals=[];for(var yy in years)vals.push(Number(yy));vals.sort(function(a,b){return a-b;});
+ $("incomeYear").innerHTML=vals.map(function(v){return '<option value="'+v+'">'+v+"</option>";}).join("");$("incomeYear").value=incomeYear;
+ $("incomeYear").onchange=function(){incomeYear=Number(this.value);incomeSelected=[];drawIncomeMonths();updateIncomeSelection();renderIncome();};
+ $("incomeOK").onclick=renderIncome;$("incomeClear").onclick=function(){incomeSelected=[];updateIncomeSelection();drawIncomeMonths();renderIncome();};
+ drawIncomeMonths();updateIncomeSelection();
+}
+function renderIncome(){
+ var months=[];
+ if(incomeSelected.length===1)months=[incomeSelected[0]];
+ if(incomeSelected.length===2){var a=incomeSelected.slice().sort(),cur=new Date(Number(a[0].slice(0,4)),Number(a[0].slice(5,7))-1,1),end=new Date(Number(a[1].slice(0,4)),Number(a[1].slice(5,7))-1,1);while(cur<=end){months.push(cur.getFullYear()+"-"+("0"+(cur.getMonth()+1)).slice(-2));cur.setMonth(cur.getMonth()+1);}}
+ var set={};for(i=0;i<months.length;i++)set[months[i]]=1;var es=entries().filter(function(d){return !!set[d.date.slice(0,7)];});
+ var work=es.length*baseDay(),ot=0,ctp=0,travel=0,extra=0;for(i=0;i<es.length;i++){ot+=dayOT(es[i]);ctp+=Number(es[i].ctp||0)*1000;travel+=Number(es[i].travel||0)*2000;extra+=dayExtra(es[i]);}
+ var custom=months.length?customTotal():0,total=work+ot+ctp+travel+extra+custom;
+ $("totalIncome").textContent=money(total);$("incomeWork").textContent=money(work);$("incomeOT").textContent=money(ot);$("incomeCTP").textContent=money(ctp);$("incomeTravel").textContent=money(travel);$("incomeExtra").textContent=money(extra+custom);
+ $("incomeLabel").textContent=months.length===1?"Đang xem: "+monthLabel(months[0]):months.length===2?"Đang xem: "+monthLabel(months[0])+" → "+monthLabel(months[months.length-1]):"Chưa chọn tháng";
+ var rows="";for(i=0;i<es.length;i++)rows+="<tr><td>"+es[i].date+"</td><td>"+money(baseDay())+"</td><td>"+money(dayOT(es[i]))+"</td><td>"+kmoney(es[i].ctp)+"</td><td>"+kmoney(es[i].travel)+"</td><td>"+money(dayExtra(es[i]))+"</td><td><b>"+money(dayTotal(es[i]))+"</b></td></tr>";
+ $("incomeTable").innerHTML=rows||'<tr><td colspan="7" class="muted">Không có dữ liệu</td></tr>';renderCustom();
+}
+function renderCustom(){
+ var out="";for(var j=0;j<data.custom.length;j++)out+='<div class="row"><input value="'+esc(data.custom[j].name)+'" placeholder="Tên khoản"><input type="number" value="'+(data.custom[j].amount||0)+'" placeholder="nghìn đồng"><button type="button" class="btn danger">×</button></div>';
+ $("customIncome").innerHTML=out;var rs=$("customIncome").children;for(var q=0;q<rs.length;q++)(function(row,idx){row.children[0].onchange=function(){data.custom[idx].name=row.children[0].value;save();renderIncome();};row.children[1].onchange=function(){data.custom[idx].amount=Number(row.children[1].value)||0;save();renderIncome();};row.children[2].onclick=function(){data.custom.splice(idx,1);save();renderIncome();};})(rs[q],q);
+}
+$("addCustom").onclick=function(){data.custom.push({name:"",amount:0});save();renderIncome();};
+
+var fundMode="percent";
+function renderFunds(){
+ var p=0,out="";
+ for(i=0;i<data.funds.length;i++){
+  p+=Number(data.funds[i].percent||0);
+  var val=fundMode==="percent"?Number(data.funds[i].percent||0):Number(data.funds[i].balance||0);
+  out+='<tr><td><input data-fi="'+i+'" data-ff="name" value="'+esc(data.funds[i].name)+'"></td><td><input type="number" min="0" value="'+val+'" data-fi="'+i+'" data-ff="'+(fundMode==="percent"?"percent":"balance")+'" style="width:95px">'+(fundMode==="percent"?"%":"đ")+'</td><td><b>'+money(data.funds[i].balance)+'</b></td><td><button type="button" class="btn danger" data-fdel="'+i+'">Xóa</button></td></tr>';
+ }
+ $("fundPercent").textContent=fundMode==="percent"?p+"%":money(data.funds.reduce(function(s,f){return s+Number(f.balance||0);},0));
+ $("fundEditor").innerHTML=out;
+ var fields=$("fundEditor").querySelectorAll("[data-ff]");
+ for(var q=0;q<fields.length;q++)fields[q].onchange=function(){
+  var idx=Number(this.getAttribute("data-fi")),f=this.getAttribute("data-ff");
+  data.funds[idx][f]=f==="name"?(this.value||("Quỹ "+(idx+1))):(Number(this.value)||0);save();render();
+ };
+ var dels=$("fundEditor").querySelectorAll("[data-fdel]");
+ for(var q2=0;q2<dels.length;q2++)dels[q2].onclick=function(){
+  var idx=Number(this.getAttribute("data-fdel"));if(data.funds.length<=1)return alert("Phải giữ ít nhất 1 quỹ.");
+  data.funds.splice(idx,1);save();render();
+ };
+ out="";
+ for(i=0;i<data.funds.length;i++)out+='<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eaecf0"><span>'+esc(data.funds[i].name)+' <small>'+data.funds[i].percent+'%</small></span><b>'+money(data.funds[i].balance)+"</b></div>";
+ $("fundBalances").innerHTML=out;
+}
+$("fundMode").onchange=function(){fundMode=this.value;renderFunds();};
+$("addFund").onclick=function(){data.funds.push({name:"Quỹ mới",percent:0,balance:0});save();render();};
+$("allocate").onclick=function(){
+ var t=totalIncome();
+ if(fundMode==="percent"){
+  var p=0;for(i=0;i<data.funds.length;i++)p+=Number(data.funds[i].percent||0);
+  if(Math.abs(p-100)>.001)return alert("Tổng tỷ lệ phải bằng 100%. Hiện tại "+p+"%.");
+  for(i=0;i<data.funds.length;i++)data.funds[i].balance=t*data.funds[i].percent/100;
+ }else{
+  var s=0;for(i=0;i<data.funds.length;i++)s+=Number(data.funds[i].balance||0);
+  if(Math.abs(s-t)>1)return alert("Tổng số tiền các quỹ phải bằng "+money(t)+". Hiện tại "+money(s)+".");
+ }
+ save();render();alert("Đã cập nhật phân bổ "+money(t));
+};
+function renderHome(){
+ $("homeTotal").textContent=money(totalIncome());$("homeDays").textContent=entries().length;$("homeOT").textContent=money(totalOT());$("homeTravel").textContent=money(totalTravel());
+ var tb=0,out="<table><thead><tr><th>Quỹ</th><th>Tỷ lệ</th><th>Số tiền</th></tr></thead><tbody>";
+ for(i=0;i<data.funds.length;i++){tb+=Number(data.funds[i].balance||0);out+="<tr><td>"+esc(data.funds[i].name)+"</td><td>"+data.funds[i].percent+"%</td><td><b>"+money(data.funds[i].balance)+"</b></td></tr>";}
+ out+="</tbody><tfoot><tr><th>Tổng</th><th>"+data.funds.reduce(function(s,f){return s+Number(f.percent||0);},0)+"%</th><th>"+money(tb)+"</th></tr></tfoot></table>";$("homeFunds").innerHTML=out;
+}
+function render(){renderHome();renderWork();renderIncome();renderFunds();}
+setupIncome();render();
+})();
+</script>
+</body>
+</html>
